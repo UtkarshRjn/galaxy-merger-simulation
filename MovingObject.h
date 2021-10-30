@@ -12,13 +12,14 @@ using namespace simplecpp;
 
 class MovingObject : public Sprite {
   vector<Sprite*> parts;
-  double vx, vy;
   bool paused;
   void initMO(double argvx, double argvy, double argax, double argay, bool argpaused=true) {
     vx=argvx; vy=argvy; ax=argax; ay=argay; paused=argpaused;
   }
+ protected:
+  double vx, vy;
+  double ax, ay; 
  public:
- double ax, ay; 
  MovingObject(double argvx, double argvy, double argax, double argay, bool argpaused=true)
     : Sprite() {
     initMO(argvx, argvy, argax, argay, argpaused);
