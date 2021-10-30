@@ -1,0 +1,1 @@
+This repository contains our course project `Galaxy-Merger Simulation` of `CS293` course `Data Structures and Algorithms Laboratory`  done under prof. `Bhaskaran Raman` in our third semester at IITB.
