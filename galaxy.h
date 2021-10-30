@@ -6,24 +6,27 @@
 #include <composite.h>
 #include <sprite.h>
 
-#define COIN_SIZE 5
 #define WINDOW_X 1400
 #define WINDOW_Y 1000
-#define STAR_SIZE 5
+#define HOLE_SIZE 5
 
 using namespace simplecpp;
 
 class Galaxy : public Sprite {
   double vx, vy; 
-  double ax, ay; 
   double mass;
+  Circle blackhole;
   void initGalaxy(double argvx, double argvy, double argax, double argay, double argmass) {
     vx=argvx; vy=argvy; ax=argax; ay=argay; mass = argmass;
   } 
  public:
+ double ax, ay; 
  Galaxy():Sprite(){};
  Galaxy(double argvx, double argvy, double argax, double argay, double argmass, double x, double y)
     : Sprite() {
+    blackhole.reset(x, y, HOLE_SIZE);
+    blackhole.setColor(COLOR("grey")); 
+    blackhole.setFill(true);
     initGalaxy(argvx, argvy, argax, argay, argmass);
     this->move(x,y);
   }

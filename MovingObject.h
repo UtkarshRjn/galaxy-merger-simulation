@@ -6,8 +6,6 @@
 #include <composite.h>
 #include <sprite.h>
 
-#define COIN_SIZE 5
-
 using namespace simplecpp;
 
 class MovingObject : public Sprite {

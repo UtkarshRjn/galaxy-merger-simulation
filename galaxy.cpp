@@ -2,7 +2,7 @@
 //200050147
 
 #include <simplecpp>
-#include "Galaxy.h"
+#include "galaxy.h"
 
 using namespace simplecpp;
 
@@ -11,7 +11,8 @@ void Galaxy::nextStep(double t) {
   // cerr << "vx=" << vx << ",vy=" << vy << endl;
   // cerr << "ax=" << ax << ",ay=" << ay << endl;
   //cout << sqrt(vx*vx + vy*vy) << endl;
-  move(vx*t, vy*t);
+  this->move(vx*t, vy*t);
+  blackhole.move(vx*t, vy*t);
   vx += ax*t;
   vy += ay*t;
 } // End Galaxy::nextStep()
