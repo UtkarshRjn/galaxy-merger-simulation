@@ -5,8 +5,10 @@
 #include"Vector.h"
 #include <SFML/Graphics.hpp>
 
-#define G 100
+#define G 1000
 #define soft 0.1*0.1
+#define BLACKHOLE_MASS 300
+#define STAR_MASS 1
 
 struct State
 {
@@ -22,6 +24,7 @@ private:
     friend class BHTreeNode;
     friend class Galaxy;
 public:
+    sf::Vector2f starPosition;
     State state;
     sf::CircleShape shape;
 public:
@@ -34,7 +37,7 @@ public:
     void setVel(Vector& new_Vel);
     void setAcc(Vector& new_acc);
     void setMass(double argmass); 
-    Vector update_state(Vector& new_acc);
+    void update_state(Vector& new_acc);
 };
 
 #endif // _STAR_H

@@ -8,9 +8,6 @@
 #include "Vector.h"
 #include "Star.h"
 
-#define BLACKHOLE_MASS 1000
-#define STAR_MASS 10
-
 //------------------------------------------------------------------------------
 /** \brief Implementation of a single node of the barnes hut tree. */
 class Galaxy{

@@ -21,7 +21,9 @@ BHTreeNode::BHTreeNode(Vector &ul,Vector &lr, BHTreeNode *parent){
     com = Vector(0,0);
     num_stars = 0;
     Subdivided = false;
-    child[0] = child[1] = child[2] = child[3] = NULL;
+    for(int i=0;i<4;i++){
+        child[i] = NULL;
+    }
     theta = THETA;
 }
 
@@ -59,6 +61,16 @@ BHTreeNode::EQuadrant BHTreeNode::GetQuadrant(Star &star){
     }
 };
 
+bool BHTreeNode::isExternal(){
+    if(child[0]==NULL && child[1]==NULL && child[2]==NULL && child[3]==NULL) return true;
+    else return false;
+}
+
+bool BHTreeNode::isRoot(){
+    if(parent == nullptr) return true;
+    else return false;
+}
+
 void BHTreeNode::CreateSubNode(EQuadrant quad){
     if(quad==SW){
         Vector new_ul = centre;
@@ -88,16 +100,18 @@ void BHTreeNode::Insert(Star& star, int lvl){
     double x = star.state.pos.getX();
     double y = star.state.pos.getY();
     
+    // cout << num_stars << endl;
     if ( (x < lr.getX() || x > ul.getX()) || (y < lr.getY() || y > ul.getY()) )
     {
-    std::stringstream ss;
-    ss << "Particle position (" << star.state.pos.getX() << ", " << star.state.pos.getY() << ") "
-       << "is outside tree node ("
-       << "lr.x=" << lr.getX() << ", "
-       << "ul.x=" << ul.getX() << ", "
-       << "lr.y=" << lr.getY() << ", "
-       << "ul.y=" << ul.getY() << ")";
-    throw std::runtime_error(ss.str());
+        return;
+    // std::stringstream ss;
+    // ss << "Particle position (" << star.state.pos.getX() << ", " << star.state.pos.getY() << ") "
+    //    << "is outside tree node ("
+    //    << "lr.x=" << lr.getX() << ", "
+    //    << "ul.x=" << ul.getX() << ", "
+    //    << "lr.y=" << lr.getY() << ", "
+    //    << "ul.y=" << ul.getY() << ")";
+    // throw std::runtime_error(ss.str());
     }
     
     if(num_stars > 1){
@@ -109,6 +123,9 @@ void BHTreeNode::Insert(Star& star, int lvl){
         child[quad]->Insert(star,lvl+1);
     }
     else if(num_stars == 1){
+        
+        assert(isExternal() || isRoot());
+        
         EQuadrant quad = GetQuadrant(this->star); // Finding the quadrant of the existing star in this node
         if(child[quad] == NULL){
             CreateSubNode(quad);
@@ -166,16 +183,16 @@ Vector BHTreeNode::CalculateForce(Star& targetStar){
         
         // Using threshold theta to decide whether child nodes have to be summed up separately while force calculation or not
         if(d/r < theta){
-            cout << "Not subdivided" << endl;
+            // cout << "Not subdivided" << endl;
             Subdivided = false;
             
             // Returns force vector acting on target star due to this node (with position at com and mass as total mass)
             double f = G*(total_mass)/(r*r*r);
             acc = f*(com - targetStar.state.pos);
-
+            // cout << "acc.x = " << acc.getX() << endl;
         }
         else{
-            cout << "Subdivided" << endl;
+            // cout << "Subdivided" << endl;
             Subdivided = true;
             for(int i=0;i<4 && child[i]!=NULL;i++){
                 

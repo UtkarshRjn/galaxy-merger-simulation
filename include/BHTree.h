@@ -37,6 +37,9 @@ public:
     BHTreeNode(Vector &ul,Vector &lr, BHTreeNode *parent=nullptr); // Constructor for a BHTree node
     ~BHTreeNode(); // Destructor for the node
 
+    bool isExternal();
+    bool isRoot();
+
     void Reset(Vector &ul, Vector &lr);
     void Insert(Star& star, int lvl);
 

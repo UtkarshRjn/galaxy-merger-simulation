@@ -15,9 +15,10 @@ Galaxy::Galaxy(int num_stars,double radius, double start_x, double start_y, doub
     this->start_y = start_y;
     this->radius = radius;
     State state{Vector(start_x,start_y),
-            Vector(start_x,start_vy),
+            Vector(start_vx,start_vy),
             Vector(0,0)};
     Star blackhole = Star(state,BLACKHOLE_MASS);
+    blackhole.shape.setFillColor(sf::Color::Blue);
     star_arr.push_back(blackhole);
     initGalaxy();
 }
@@ -46,14 +47,14 @@ void Galaxy::initGalaxy(){
 
         vx = this->start_vx - rel_speed*sin(angle_rad);
         vy = this->start_vy + rel_speed*cos(angle_rad);
-        cout << vx << endl;
+        // cout << vx << endl;
 
         ax = -(rel_speed*rel_speed/r)*cos(angle_rad);
         ay = (rel_speed*rel_speed/r)*sin(angle_rad);
 
         State state{Vector(strt_x,strt_y),
-                    Vector(vx,vy),
-                    Vector(ax,ay)};
+                    Vector(vx/18,vy/18),
+                    Vector(0,0)};
         Star star = Star(state,STAR_MASS);
         star_arr.push_back(star);      
     }

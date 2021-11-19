@@ -19,12 +19,13 @@ Star::Star(State &argstate,double argmass){
     mass = argmass;    
     shape.setRadius(2.0f);
     shape.setFillColor(sf::Color::White);
-    sf::Vector2f starPosition(state.pos.getX(),state.pos.getY());
+    starPosition.x = state.pos.getX();
+    starPosition.y = state.pos.getY();
     shape.setPosition(starPosition);
 }
 
 Vector Star::isPulledby(Star& star){
-    Vector acc = Vector(0,0);
+    Vector acc = Vector(2,2);
 
     if(&star == this){return acc;}
 
@@ -36,7 +37,7 @@ Vector Star::isPulledby(Star& star){
     double r = sqrt((x1-y2)*(x1-x2)+ (y1-y2)*(y1-y2));
 
     if(r>0){
-        double f = G * star.mass / (r*r*r) ; // Not multiplying by mass of this star because we are concerned about acc
+        double f = G * star.mass / (r*r*r + soft) ; // Not multiplying by mass of this star because we are concerned about acc
 
         acc.setX(f*(x2-x1));
         acc.setY(f*(y2-y1)); 
@@ -49,16 +50,18 @@ Vector Star::isPulledby(Star& star){
 
 };
 
-Vector Star::update_state(Vector& new_acc){
+void Star::update_state(Vector& new_acc){
     state.pos = state.pos + state.vel;
     state.vel = state.vel + state.acc;
     state.acc = new_acc;
 
-    cout << "x=" << state.pos.getX() << ",y=" << state.pos.getY() << endl;
-    cout << "vx=" << state.vel.getX() << ",vy=" << state.vel.getY() << endl;
-    cout << "ax=" << state.acc.getX() << ",ay=" << state.acc.getY() << endl;
+    // cout << "x=" << state.pos.getX() << ",y=" << state.pos.getY() << endl;
+    // cout << "vx=" << state.vel.getX() << ",vy=" << state.vel.getY() << endl;
+    // cout << "ax=" << state.acc.getX() << ",ay=" << state.acc.getY() << endl;
 
-    return state.pos;
+    starPosition.x = state.pos.getX();
+    starPosition.y = state.pos.getY();
+    shape.setPosition(starPosition);
 }
 
 void Star::setPos(Vector& new_pos){
