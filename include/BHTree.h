@@ -5,8 +5,8 @@
 #include <vector>
 
 //--- Implementation -----------------------------------------------------------
-#include"Vector.h"
-#include"Star.h"
+#include "Vector.h"
+#include "Star.h"
 
 
 
@@ -47,6 +47,8 @@ public:
     void CreateSubNode(EQuadrant quad);
 
     double ComputeMass();
+    
+    friend class Star;
 };
 
 #endif

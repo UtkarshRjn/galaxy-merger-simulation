@@ -38,6 +38,6 @@ double Vector::getX(){
     return x;
 }
 
-double Vector::getX(){
+double Vector::getY(){
     return y;
 }
