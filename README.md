@@ -34,13 +34,11 @@ I have Implemented a naive algorithm in the **Simplecpp** graphics library. Lets
 
 * The Barnes Hut algorithm specifies a critical distance θθ if the distance between the body and the centre of mass of the quadrant is greater than θθ then it is used as an approximation, if not the algorithm moves to the  next depth of the quadtree and tries again, this happens recursively  until the distance becomes below θθ or there is only 1 body in the quadrant 
 
-  ![bh_tree](/home/utkarsh/Documents/iitb/cs293/project/code/galaxy/bh_tree.svg)
+  ![bh_tree](./bh_tree.svg)
 
 **It has a time complexity of Nlog(N)**
 
 ## Results
 
-### Naive Implementation: <inset_gdrive_link>
-
-### Barnes-Hut Algorithm: <inset_gdrive_link>
+### [Link to Demo Video](https://drive.google.com/file/d/1TMJ-ny1K-zSIebrjW1ESVEEKc1jqBJG2/view?usp=sharing) 
 

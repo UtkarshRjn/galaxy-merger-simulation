@@ -17,7 +17,6 @@ using namespace std;
 
 int main()
 {
-    // cout << endl;
     sf::RenderWindow window(sf::VideoMode(WINDOW_X, WINDOW_Y), "Galaxy Simulation!!");
     window.setFramerateLimit(FRAME_RATE);
 
@@ -72,7 +71,6 @@ int main()
                 window.close();
 
         }
-
 
         // Vector new_acc = my_bhtree.CalculateForce(star1);
         // star1.update_state(new_acc);
