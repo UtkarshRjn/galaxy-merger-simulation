@@ -121,12 +121,15 @@ void BHTreeNode::Insert(Star& star, int lvl){
             CreateSubNode(quad);
         }
         child[quad]->Insert(this->star,lvl+1);
+        // cout << quad << " " << lvl << endl;
 
         quad = GetQuadrant(star); // Finding the quadrant of the new star to be inserted in this node
         if(child[quad] == NULL){
             CreateSubNode(quad);
         }
         child[quad]->Insert(star,lvl+1);
+        // cout << quad << " " << lvl << endl;
+        
     }
     else if(num_stars == 0){
         this->star = star;
@@ -164,6 +167,7 @@ Vector BHTreeNode::CalculateForce(Star& targetStar,int lvl){
         
         // Returns force vector acting on target star due to the star in this node
         acc = targetStar.isPulledby(star);
+        // cout << "acc when staris only one" << lvl << " " << acc.getX() << endl;
 
     }else{
        

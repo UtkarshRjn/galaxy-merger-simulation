@@ -3,6 +3,7 @@
 #include <chrono>
 #include <random>
 #include <iostream>
+#include <vector>
 
 //--- Implementation -----------------------------------------------------------
 #include "Galaxy.h"
@@ -20,8 +21,8 @@ int main()
     sf::RenderWindow window(sf::VideoMode(WINDOW_X, WINDOW_Y), "Galaxy Simulation!!");
     window.setFramerateLimit(FRAME_RATE);
 
-    Galaxy milkyway(5000,80,WINDOW_X/2+1,WINDOW_Y/2+1,1,-1);
-    Galaxy andromeda(5000,80,3*WINDOW_X/4+1,WINDOW_Y/4+1,-1,2);
+    Galaxy milkyway(5000,200,WINDOW_X/2-500+1,WINDOW_Y/2+500+1,1,-1);
+    Galaxy andromeda(5000,200,3*WINDOW_X/4+1,WINDOW_Y/4+1,-1,2);
 
     sf::Vertex vline[] = 
     {
@@ -50,10 +51,10 @@ int main()
     // State state1 = {Vector(0,300),Vector(3,0),Vector(0,0)};
     // Star star1 = Star(state1,10);
     // State state2 = {Vector(1000,700),Vector(-3,0),Vector(0,0)};
-    // Star star2 = Star(state2,20);
+    // Star star2 = Star(state2,10);
     
-    // my_bhtree.Insert(star2,200);
-    // my_bhtree.Insert(star1,200);
+    // my_bhtree.Insert(star2,0);
+    // my_bhtree.Insert(star1,0);
     for(unsigned int i=0;i<milkyway.star_arr.size();++i){
         my_bhtree.Insert(milkyway.star_arr[i],0);
     }        
@@ -61,6 +62,7 @@ int main()
         my_bhtree.Insert(andromeda.star_arr[i],0);
     }
     my_bhtree.ComputeMassDistribution();
+    cout << endl;
 
     while (window.isOpen())
     {
@@ -72,21 +74,33 @@ int main()
 
         }
 
+        // vector<Vector> accelaration_vector;
         // Vector new_acc = my_bhtree.CalculateForce(star1);
-        // star1.update_state(new_acc);
+        // cout << "acc1 = " << new_acc.getX() << endl;
 
         // new_acc = my_bhtree.CalculateForce(star2);
+        
+        // star1.update_state(new_acc);
         // star2.update_state(new_acc);
         for(unsigned int i=0;i<milkyway.star_arr.size();++i){
 
             Vector new_acc = my_bhtree.CalculateForce(milkyway.star_arr[i]);
-            new_acc = new_acc;
             milkyway.star_arr[i].update_state(new_acc);
+            // if(i%100==0) cout << "acc2 = " << new_acc.getX() << endl;
         }
         for(unsigned int i=0;i<andromeda.star_arr.size();++i){
 
             Vector new_acc = my_bhtree.CalculateForce(andromeda.star_arr[i]);
             andromeda.star_arr[i].update_state(new_acc);
+        }
+
+        for(unsigned int i=0;i<milkyway.star_arr.size();++i){
+
+            milkyway.star_arr[i].update_pos();
+        }
+        for(unsigned int i=0;i<andromeda.star_arr.size();++i){
+
+            andromeda.star_arr[i].update_pos();
         }
 
         my_bhtree.Reset(ul,lr);

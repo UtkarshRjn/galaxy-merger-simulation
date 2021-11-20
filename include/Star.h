@@ -5,7 +5,7 @@
 #include"Vector.h"
 #include <SFML/Graphics.hpp>
 
-const double G = 1.6e-19;
+const double G = 1.6e-17;
 const double soft = 0.1*0.1;
 const double BLACKHOLE_MASS = 1e20;
 const double STAR_MASS = 2;
@@ -40,6 +40,7 @@ public:
     void setAcc(Vector& new_acc);
     void setMass(double argmass); 
     void update_state(Vector& new_acc);
+    void update_pos();
 };
 
 #endif // _STAR_H
