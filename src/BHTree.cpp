@@ -100,18 +100,8 @@ void BHTreeNode::Insert(Star& star, int lvl){
     double x = star.state.pos.getX();
     double y = star.state.pos.getY();
     
-    // cout << num_stars << endl;
-    if ( (x < lr.getX() || x > ul.getX()) || (y < lr.getY() || y > ul.getY()) )
-    {
+    if ( (x < lr.getX() || x > ul.getX()) || (y < lr.getY() || y > ul.getY()) ){
         return;
-    // std::stringstream ss;
-    // ss << "Particle position (" << star.state.pos.getX() << ", " << star.state.pos.getY() << ") "
-    //    << "is outside tree node ("
-    //    << "lr.x=" << lr.getX() << ", "
-    //    << "ul.x=" << ul.getX() << ", "
-    //    << "lr.y=" << lr.getY() << ", "
-    //    << "ul.y=" << ul.getY() << ")";
-    // throw std::runtime_error(ss.str());
     }
     
     if(num_stars > 1){
@@ -141,7 +131,7 @@ void BHTreeNode::Insert(Star& star, int lvl){
     else if(num_stars == 0){
         this->star = star;
     }
-    // cout << num_stars << endl;
+
     num_stars++;
 };
 
@@ -153,25 +143,28 @@ void BHTreeNode::ComputeMassDistribution(){
         total_mass = 0;
         com = Vector(0,0);
         
-        for(int i=0;i<4 && child[i]!=NULL;i++){
-            child[i]->ComputeMassDistribution();
-            total_mass += child[i]->total_mass;
-            Vector temp = child[i]->total_mass * child[i]->com ;
-            com = com + temp;
+        for(int i=0;i<4;i++){
+            
+            if(child[i]!=NULL){
+                child[i]->ComputeMassDistribution();
+                total_mass += child[i]->total_mass;
+                Vector temp = child[i]->total_mass * child[i]->com ;
+                com = com + temp;
+            }
         }
         com = com/total_mass;
     }
 }
 
-Vector BHTreeNode::CalculateForce(Star& targetStar){
+/** \brief Calculates force on a particular star due to all other stars in the proximity(which are part of the BHTree) */
+Vector BHTreeNode::CalculateForce(Star& targetStar,int lvl){
     Vector acc = Vector(0,0);
-    
+
     if(num_stars==1){
         
         // Returns force vector acting on target star due to the star in this node
         acc = targetStar.isPulledby(star);
-        // cout << "acc.x = " << acc.getX() << endl;
-        // cout << "acc.y = " << acc.getY() << endl;
+
     }else{
        
         // r : distance from nodes centre of mass to target particle
@@ -183,27 +176,23 @@ Vector BHTreeNode::CalculateForce(Star& targetStar){
         
         // Using threshold theta to decide whether child nodes have to be summed up separately while force calculation or not
         if(d/r < theta){
-            // cout << "Not subdivided" << endl;
             Subdivided = false;
             
             // Returns force vector acting on target star due to this node (with position at com and mass as total mass)
             double f = G*(total_mass)/(r*r*r);
             acc = f*(com - targetStar.state.pos);
-            // cout << "acc.x = " << acc.getX() << endl;
         }
         else{
-            // cout << "Subdivided" << endl;
             Subdivided = true;
-            for(int i=0;i<4 && child[i]!=NULL;i++){
-                
-                // When d/r > theta we are going one more level deep to find the force(acc)
-                acc = acc + child[i]->CalculateForce(targetStar);
-                // cout << "acc.x = " << acc.getX() << endl;
-                // cout << "acc.y = " << acc.getY() << endl;
+
+            for(int i=0;i<4;i++){ 
+                if(child[i]!=NULL){
+                    // When d/r > theta we are going one more level deep to find the force(acc)
+                    acc = acc + child[i]->CalculateForce(targetStar,lvl+1);
+                }
             }
         }
     }
-
     return acc;
 }
 

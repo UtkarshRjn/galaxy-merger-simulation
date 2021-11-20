@@ -1,6 +1,7 @@
 #ifndef _VECTOR_H
 #define _VECTOR_H
 
+/** \brief A 2D Vector implementation. */
 class Vector{
 private:
   double x;

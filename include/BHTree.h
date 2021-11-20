@@ -8,8 +8,6 @@
 #include "Vector.h"
 #include "Star.h"
 
-
-
 //------------------------------------------------------------------------------
 /** \brief Implementation of a single node of the barnes hut tree. */
 class BHTreeNode{
@@ -46,7 +44,7 @@ public:
     EQuadrant GetQuadrant(Star& star);
 
     void ComputeMassDistribution();
-    Vector CalculateForce(Star& targetStar);
+    Vector CalculateForce(Star& targetStar, int lvl=0);
     void CreateSubNode(EQuadrant quad);
 
     double ComputeMass();

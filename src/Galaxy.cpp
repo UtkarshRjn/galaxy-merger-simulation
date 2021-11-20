@@ -1,6 +1,9 @@
 #include "Galaxy.h"
+
+//--- Implementation -----------------------------------------------------------
 #include "Vector.h"
 
+//--- Standard includes --------------------------------------------------------
 #include <random>
 #include <chrono>
 #include <cmath>
@@ -19,6 +22,7 @@ Galaxy::Galaxy(int num_stars,double radius, double start_x, double start_y, doub
             Vector(0,0)};
     Star blackhole = Star(state,BLACKHOLE_MASS);
     blackhole.shape.setFillColor(sf::Color::Blue);
+    blackhole.shape.setRadius(BLACKHOLE_RADIUS);
     star_arr.push_back(blackhole);
     initGalaxy();
 }
@@ -30,13 +34,19 @@ void Galaxy::initGalaxy(){
     double r, rel_speed, angle_rad;
     double vx,vy;
     double ax,ay;
+    double rad, theta;
     for(int i=0;i<num_stars;i++){
         unsigned seed = chrono::steady_clock::now().time_since_epoch().count();
-        std::default_random_engine generator(seed);
-        std::normal_distribution<double> distribution(0.0,1.0);
 
-        X = distribution(generator)*radius;
-        Y = distribution(generator)*radius;
+        std::default_random_engine generator(seed);
+        std::uniform_real_distribution<double> distribution_rad(radius/10,radius);
+        std::uniform_real_distribution<double> distribution_theta(0,2*M_PI);
+        
+        rad = distribution_rad(generator);
+        theta = distribution_theta(generator);
+
+        X = rad*cos(theta);
+        Y = rad*sin(theta);
 
         strt_x = this->start_x + X;
         strt_y = this->start_y - Y;
@@ -47,14 +57,15 @@ void Galaxy::initGalaxy(){
 
         vx = this->start_vx - rel_speed*sin(angle_rad);
         vy = this->start_vy + rel_speed*cos(angle_rad);
-        // cout << vx << endl;
+        // cout << "vx: " << vx << endl;
 
         ax = -(rel_speed*rel_speed/r)*cos(angle_rad);
         ay = (rel_speed*rel_speed/r)*sin(angle_rad);
+        // cout << "ax: " << ax << endl;
 
         State state{Vector(strt_x,strt_y),
-                    Vector(vx/18,vy/18),
-                    Vector(0,0)};
+                    Vector(vx,vy),
+                    Vector(ax,ay)};
         Star star = Star(state,STAR_MASS);
         star_arr.push_back(star);      
     }

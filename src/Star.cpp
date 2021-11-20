@@ -17,15 +17,17 @@ using namespace std;
 Star::Star(State &argstate,double argmass){
     state = argstate;
     mass = argmass;    
-    shape.setRadius(2.0f);
+    shape.setRadius(STAR_RADIUS);
     shape.setFillColor(sf::Color::White);
     starPosition.x = state.pos.getX();
     starPosition.y = state.pos.getY();
     shape.setPosition(starPosition);
 }
 
+// Function to find force vector acting on a star due to the argument star
 Vector Star::isPulledby(Star& star){
-    Vector acc = Vector(2,2);
+
+    Vector acc = Vector(0,0);
 
     if(&star == this){return acc;}
 
@@ -50,6 +52,7 @@ Vector Star::isPulledby(Star& star){
 
 };
 
+// Update the state (velocity,acceleration and position of star at each time step)
 void Star::update_state(Vector& new_acc){
     state.pos = state.pos + state.vel;
     state.vel = state.vel + state.acc;

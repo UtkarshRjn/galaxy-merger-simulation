@@ -5,10 +5,12 @@
 #include"Vector.h"
 #include <SFML/Graphics.hpp>
 
-#define G 1000
-#define soft 0.1*0.1
-#define BLACKHOLE_MASS 300
-#define STAR_MASS 1
+const double G = 1.6e-19;
+const double soft = 0.1*0.1;
+const double BLACKHOLE_MASS = 1e20;
+const double STAR_MASS = 2;
+const double STAR_RADIUS = 1;
+const double BLACKHOLE_RADIUS = 5;
 
 struct State
 {

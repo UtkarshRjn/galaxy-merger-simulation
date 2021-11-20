@@ -1,7 +1,10 @@
+//--- Standard includes --------------------------------------------------------
 #include <SFML/Graphics.hpp>
 #include <chrono>
 #include <random>
 #include <iostream>
+
+//--- Implementation -----------------------------------------------------------
 #include "Galaxy.h"
 #include "BHTree.h"
 #include "Vector.h"
@@ -14,11 +17,12 @@ using namespace std;
 
 int main()
 {
+    // cout << endl;
     sf::RenderWindow window(sf::VideoMode(WINDOW_X, WINDOW_Y), "Galaxy Simulation!!");
     window.setFramerateLimit(FRAME_RATE);
 
-    Galaxy milkyway(5000,80,WINDOW_X/2+1,WINDOW_Y/2+1,1,0);
-    Galaxy andromeda(500,40,3*WINDOW_X/4+1,WINDOW_Y/4+1,80,80);
+    Galaxy milkyway(5000,80,WINDOW_X/2+1,WINDOW_Y/2+1,1,-1);
+    Galaxy andromeda(5000,80,3*WINDOW_X/4+1,WINDOW_Y/4+1,-1,2);
 
     sf::Vertex vline[] = 
     {
@@ -35,6 +39,22 @@ int main()
     Vector lr = Vector(0,0);
     BHTreeNode my_bhtree(ul,lr);
 
+    // sf::CircleShape shape1(2.f);
+    // sf::Vector2f starPosition1(100.f,100.f);
+    // sf::CircleShape shape2(2.f);
+    // sf::Vector2f starPosition2(500.f,500.f);
+    // shape1.setFillColor(sf::Color::White);
+    // shape1.setPosition(starPosition1);
+    // shape2.setFillColor(sf::Color::White);
+    // shape2.setPosition(starPosition2);
+
+    // State state1 = {Vector(0,300),Vector(3,0),Vector(0,0)};
+    // Star star1 = Star(state1,10);
+    // State state2 = {Vector(1000,700),Vector(-3,0),Vector(0,0)};
+    // Star star2 = Star(state2,20);
+    
+    // my_bhtree.Insert(star2,200);
+    // my_bhtree.Insert(star1,200);
     for(unsigned int i=0;i<milkyway.star_arr.size();++i){
         my_bhtree.Insert(milkyway.star_arr[i],0);
     }        
@@ -42,13 +62,6 @@ int main()
         my_bhtree.Insert(andromeda.star_arr[i],0);
     }
     my_bhtree.ComputeMassDistribution();
-
-    sf::CircleShape shape(2.f);
-    sf::Vector2f starPosition2;
-    starPosition2.x = 300.f;
-    starPosition2.y = 300.f;
-    shape.setFillColor(sf::Color::White);
-    shape.setPosition(starPosition2);
 
     while (window.isOpen())
     {
@@ -60,26 +73,28 @@ int main()
 
         }
 
-        starPosition2.x = 500;
-        starPosition2.y = 500; 
-        shape.setPosition(starPosition2);
+
+        // Vector new_acc = my_bhtree.CalculateForce(star1);
+        // star1.update_state(new_acc);
+
+        // new_acc = my_bhtree.CalculateForce(star2);
+        // star2.update_state(new_acc);
         for(unsigned int i=0;i<milkyway.star_arr.size();++i){
 
             Vector new_acc = my_bhtree.CalculateForce(milkyway.star_arr[i]);
-            new_acc = new_acc/1e6;
-            // if(i%100==0) cout << new_acc.getX() << endl;
+            new_acc = new_acc;
             milkyway.star_arr[i].update_state(new_acc);
         }
         for(unsigned int i=0;i<andromeda.star_arr.size();++i){
 
             Vector new_acc = my_bhtree.CalculateForce(andromeda.star_arr[i]);
-            if(i==0) new_acc = new_acc/1e4; 
-            else new_acc = new_acc/1e6;
-            // if(i%100==0) cout << new_acc.getX() << endl;
             andromeda.star_arr[i].update_state(new_acc);
         }
-        
+
         my_bhtree.Reset(ul,lr);
+        // my_bhtree.Insert(star1,0);
+        // my_bhtree.Insert(star2,0);
+
         for(unsigned int i=0;i<milkyway.star_arr.size();++i){
             my_bhtree.Insert(milkyway.star_arr[i],0);
         }        
@@ -87,7 +102,6 @@ int main()
             my_bhtree.Insert(andromeda.star_arr[i],0);
         }
         my_bhtree.ComputeMassDistribution();
-
         window.clear();
 
         for(auto star:milkyway.star_arr){
@@ -97,7 +111,9 @@ int main()
             window.draw(star.shape);
         }
 
-        window.draw(shape);
+        // window.draw(shape);
+        // window.draw(star1.shape);
+        // window.draw(star2.shape);
         window.draw(vline,2,sf::Lines);
         window.draw(hline,2,sf::Lines);
         window.display();
