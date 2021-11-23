@@ -62,7 +62,7 @@ int main()
         my_bhtree.Insert(andromeda.star_arr[i],0);
     }
     my_bhtree.ComputeMassDistribution();
-    cout << endl;
+    // cout << endl;
 
     while (window.isOpen())
     {
