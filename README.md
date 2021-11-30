@@ -10,7 +10,7 @@ The equation for computing the force caused by number of particles on a single p
 
 <img src="https://latex.codecogs.com/svg.image?\begin{equation}m_i&space;\ddot{\vec{r_i}}&space;=&space;G&space;\sum_{j=1;j&space;\ne&space;i}^N&space;\Big(&space;m_i&space;m_j&space;\frac{&space;\vec{r_i}&space;-&space;\vec{r_j}}&space;{|\vec{r_i}&space;-&space;\vec{r_j}|^3}&space;\Big)\\\end{equation}\\&space;with:\\m_i,m_j&space;-&space;\text{Mass&space;of&space;the&space;particle&space;i&space;and&space;j}\\\vec{r_i},\vec{r_j}&space;-&space;\text{Positional&space;vectors&space;of&space;the&space;particles}\\G&space;-&space;\text{Gravitational&space;Constant}\\" title="\begin{equation}m_i \ddot{\vec{r_i}} = G \sum_{j=1;j \ne i}^N \Big( m_i m_j \frac{ \vec{r_i} - \vec{r_j}} {|\vec{r_i} - \vec{r_j}|^3} \Big)\\\end{equation}\\ with:\\m_i,m_j - \text{Mass of the particle i and j}\\\vec{r_i},\vec{r_j} - \text{Positional vectors of the particles}\\G - \text{Gravitational Constant}\\" />
 
-### N![(/home/utkarsh/Documents/iitb/cs293/project/galaxy/galaxy.png)aive Approach
+### Naive Approach
 
 I have Implemented a naive algorithm in the **Simplecpp** graphics library. Lets assume Fij is the force acting between particles i and  j. The total number of force calculations required to compute the state  of the system is N*(N-1). So the problem is of order O(N^2).
 
